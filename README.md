@@ -5,7 +5,7 @@ It is something I've developed for my own use over several years.
 
 ## Compiling
 
-GCC, SDL, and PhysicsFS are required for compilation.
+GCC, SDL, SDL_mixer, and PhysicsFS are required for compilation.
 
 Run `make`, and the binary should be created under `bin/`.
 
