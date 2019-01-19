@@ -3,9 +3,23 @@
 This is base code for simple, 2-dimensional games written in C.
 It is something I've developed for my own use over several years.
 
+Features:
+
+* Sprite/texture loading from BMP files.
+* Sound effect loading from WAV files.
+* Bitmap font system.
+* Configuration saving/loading from text files.
+* Debugging facilities with logging to file.
+
 ## Compiling
 
-GCC, SDL, SDL_mixer, and PhysicsFS are required for compilation.
+Use GCC to compile.
+
+The following libraries are required for compilation:
+
+* SDL (https://libsdl.org/)
+* SDL_mixer (https://libsdl.org/projects/SDL_mixer/)
+* PhysicsFS (https://icculus.org/physfs/)
 
 Run `make`, and the binary should be created under `bin/`.
 
