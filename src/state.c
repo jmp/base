@@ -5,23 +5,23 @@
 #include "error.h"
 #include "debug.h"
 
-// Keep track of the current state
+/* Keep track of the current state */
 static State *state;
 
-//
-// Set the next state
-//
+/*
+ * Set the next state
+ */
 void state_set(State * new_state) {
     debug_printf("Changing state...\n");
 
-    // Quit the current state if it exists
+    /* Quit the current state if it exists */
     if (state) {
         state->quit();
     }
 
     state = new_state;
 
-    // The state might be NULL, which means we want to quit
+    /* The state might be NULL, which means we want to quit */
     if (state) {
         state->init();
     }
@@ -29,11 +29,11 @@ void state_set(State * new_state) {
     debug_printf("State changed.\n");
 }
 
-//
-// Update the given state by first updating user input and then running the
-// update function of the current state. Returns 1 if the game should exit,
-// 0 otherwise.
-//
+/*
+ * Update the given state by first updating user input and then running the
+ * update function of the current state. Returns 1 if the game should exit,
+ * 0 otherwise.
+ */
 int state_update(void) {
     // Update user input and window events
     input_update();
@@ -48,18 +48,18 @@ int state_update(void) {
     return 0;
 }
 
-//
-// Render the given state
-//
+/*
+ * Render the given state
+ */
 void state_draw(float fraction) {
     if (state) {
         state->draw(fraction);
     }
 }
 
-//
-// Quit the current state.
-//
+/*
+ * Quit the current state.
+ */
 void state_quit(void) {
     debug_printf("Quitting state...\n");
 
