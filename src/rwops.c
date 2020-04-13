@@ -68,11 +68,7 @@ static size_t SDLCALL physfsrwops_read(struct SDL_RWops *rw, void *ptr,
                                        size_t size, size_t maxnum) {
     PHYSFS_File *handle = (PHYSFS_File*) rw->hidden.unknown.data1;
     const PHYSFS_uint64 readlen = (PHYSFS_uint64) (maxnum * size);
-#if PHYSFS_VER_MAJOR < 2 || PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR < 1
-    const PHYSFS_sint64 rc = PHYSFS_read(handle, ptr, 1, readlen);
-#else
     const PHYSFS_sint64 rc = PHYSFS_readBytes(handle, ptr, readlen);
-#endif
     if (rc != ((PHYSFS_sint64) readlen)) {
         if (!PHYSFS_eof(handle)) {
             SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
@@ -87,18 +83,14 @@ static size_t SDLCALL physfsrwops_write(struct SDL_RWops *rw,
                                         size_t num) {
     PHYSFS_File *handle = (PHYSFS_File*) rw->hidden.unknown.data1;
     const PHYSFS_uint64 writelen = (PHYSFS_uint64) (num * size);
-#if PHYSFS_VER_MAJOR < 2 || PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR < 1
-    const PHYSFS_sint64 rc = PHYSFS_write(handle, ptr, 1, writelen);
-#else
     const PHYSFS_sint64 rc = PHYSFS_writeBytes(handle, ptr, writelen);
-#endif
     if (rc != ((PHYSFS_sint64) writelen)) {
         SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
     return (size_t) rc;
 }
 
-static int physfsrwops_close(SDL_RWops * rw) {
+static int physfsrwops_close(SDL_RWops *rw) {
     PHYSFS_File *handle = (PHYSFS_File*) rw->hidden.unknown.data1;
     if (!PHYSFS_close(handle)) {
         SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
@@ -108,7 +100,7 @@ static int physfsrwops_close(SDL_RWops * rw) {
     return 0;
 }
 
-static SDL_RWops *create_rwops(PHYSFS_File * handle) {
+static SDL_RWops *create_rwops(PHYSFS_File *handle) {
     SDL_RWops *retval = NULL;
 
     if (handle == NULL) {
