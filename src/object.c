@@ -52,12 +52,12 @@ void object_get_pos(Object *object, float *x, float *y) {
     *y = object->y;
 }
 
-void object_get_pos_lerped(Object * object, float *x, float *y, float fraction) {
+void object_get_pos_lerped(Object *object, float *x, float *y, float fraction) {
     *x = lerp(object->prev_x, object->x, fraction);
     *y = lerp(object->prev_y, object->y, fraction);
 }
 
-void object_set_pos(Object * object, float x, float y) {
+void object_set_pos(Object *object, float x, float y) {
     object->x = x;
     object->y = y;
 }
