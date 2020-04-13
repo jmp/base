@@ -1,15 +1,13 @@
 CC=gcc
-ARCH=x86_64
 TARGET=bin/base
 EXTLIBS=-lSDL2main -lSDL2 -lSDL2_mixer -lphysfs
-CFLAGS=-m$(if $(filter $(ARCH),x86),32,64) \
-	-O2 -std=c99 -pedantic -Wall -Werror -Wextra -Wno-unused
-LDFLAGS=-m$(if $(filter $(ARCH),x86),32,64) -lm $(EXTLIBS)
+CFLAGS=-m64 -O2 -std=c99 -pedantic -Wall -Werror -Wextra -Wno-unused
+LDFLAGS=-m64 -lm $(EXTLIBS)
 OBJECTS=$(patsubst src/%.c,obj/%.o,$(wildcard src/*.c))
 
 ifdef ComSpec
 	TARGET := $(TARGET).exe
-	CFLAGS := $(CFLAGS) -Iext/$(ARCH)/include -Lext/$(ARCH)/lib
+	CFLAGS := $(CFLAGS) -Iext/include -Lext/lib
 	LDFLAGS := -mconsole -mwindows -lmingw32 $(LDFLAGS) -lwinmm -limm32 -lole32 -loleaut32 -lversion -static
 	mkdir = mkdir $(subst /,\,$(1)) > nul 2>&1 || (exit 0)
 	rm = $(wordlist 2,65535,$(foreach FILE,$(subst /,\,$(1)),& del $(FILE) > nul 2>&1)) || (exit 0)

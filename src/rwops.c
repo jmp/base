@@ -27,7 +27,7 @@ static Sint64 SDLCALL physfsrwops_seek(struct SDL_RWops *rw, Sint64 offset,
         const PHYSFS_sint64 current = PHYSFS_tell(handle);
         if (current == -1) {
             SDL_SetError("Can't find position in file: %s",
-                         PHYSFS_getLastError());
+                         PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return -1;
         }
 
@@ -41,7 +41,7 @@ static Sint64 SDLCALL physfsrwops_seek(struct SDL_RWops *rw, Sint64 offset,
         const PHYSFS_sint64 len = PHYSFS_fileLength(handle);
         if (len == -1) {
             SDL_SetError("Can't find end of file: %s",
-                         PHYSFS_getLastError());
+                         PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return -1;
         }
 
@@ -57,7 +57,7 @@ static Sint64 SDLCALL physfsrwops_seek(struct SDL_RWops *rw, Sint64 offset,
     }
 
     if (!PHYSFS_seek(handle, (PHYSFS_uint64) pos)) {
-        SDL_SetError(PHYSFS_getLastError());
+        SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return -1;
     }
 
@@ -75,7 +75,7 @@ static size_t SDLCALL physfsrwops_read(struct SDL_RWops *rw, void *ptr,
 #endif
     if (rc != ((PHYSFS_sint64) readlen)) {
         if (!PHYSFS_eof(handle)) {
-            SDL_SetError(PHYSFS_getLastError());
+            SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return 0;
         }
     }
@@ -93,7 +93,7 @@ static size_t SDLCALL physfsrwops_write(struct SDL_RWops *rw,
     const PHYSFS_sint64 rc = PHYSFS_writeBytes(handle, ptr, writelen);
 #endif
     if (rc != ((PHYSFS_sint64) writelen)) {
-        SDL_SetError(PHYSFS_getLastError());
+        SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
     return (size_t) rc;
 }
@@ -101,7 +101,7 @@ static size_t SDLCALL physfsrwops_write(struct SDL_RWops *rw,
 static int physfsrwops_close(SDL_RWops * rw) {
     PHYSFS_File *handle = (PHYSFS_File*) rw->hidden.unknown.data1;
     if (!PHYSFS_close(handle)) {
-        SDL_SetError(PHYSFS_getLastError());
+        SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return -1;
     }
     SDL_FreeRW(rw);
@@ -112,7 +112,7 @@ static SDL_RWops *create_rwops(PHYSFS_File * handle) {
     SDL_RWops *retval = NULL;
 
     if (handle == NULL) {
-        SDL_SetError(PHYSFS_getLastError());
+        SDL_SetError(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     } else if ((retval = SDL_AllocRW()) != NULL) {
         retval->size = physfsrwops_size;
         retval->seek = physfsrwops_seek;
@@ -150,7 +150,7 @@ void rwops_init(const char *program_name) {
 
     if (!PHYSFS_init(get_exe_path(program_name))) {
         error("Failed to initialize R/W operations: %s\n",
-              PHYSFS_getLastError());
+              PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 
     debug_printf("Mounting paths...\n");
