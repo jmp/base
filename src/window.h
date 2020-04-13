@@ -15,5 +15,4 @@ extern int window_handle_events(void);
 extern void window_clear(unsigned char r, unsigned char g, unsigned char b);
 extern void window_flip(void);
 
-
 #endif

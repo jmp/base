@@ -11,7 +11,7 @@ static State *state;
 /*
  * Set the next state
  */
-void state_set(State * new_state) {
+void state_set(State *new_state) {
     debug_printf("Changing state...\n");
 
     /* Quit the current state if it exists */
