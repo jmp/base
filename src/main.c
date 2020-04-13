@@ -41,8 +41,16 @@ static void loop(void) {
             accumulator -= TIMESTEP;
         }
 
+        /*
+         * At this point, accumulator may be nonzero, which means that
+         * we are "inbetween" two state update ticks. In this case, we
+         * want to do simple interpolation with the game objects to
+         * avoid stuttering.
+         */
+        float fraction = accumulator / (float) TIMESTEP;
+
         /* Render everything */
-        state_draw(accumulator / (float) TIMESTEP);
+        state_draw(fraction);
 
         /* Don't hog all CPU time */
         timer_sleep(1);
